@@ -61,6 +61,7 @@ func App() *buffalo.App {
 		app.Use(popmw.Transaction(models.DB))
 
 		app.GET("/", HomeHandler)
+		app.Resource("/characters", CharactersResource{})
 	}
 
 	return app
