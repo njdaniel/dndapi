@@ -11,6 +11,12 @@ import (
 
 	"dndapi/models"
 
+	buffaloSwagger "github.com/swaggo/buffalo-swagger"
+	"github.com/swaggo/buffalo-swagger/swaggerFiles"
+
+	//for swagger doc
+	_ "dndapi/docs"
+
 	"github.com/gobuffalo/buffalo-pop/v2/pop/popmw"
 	contenttype "github.com/gobuffalo/mw-contenttype"
 	"github.com/gobuffalo/x/sessions"
@@ -36,6 +42,11 @@ var T *i18n.Translator
 // `ServeFiles` is a CATCH-ALL route, so it should always be
 // placed last in the route declarations, as it will prevent routes
 // declared after it to never be called.
+// @title DnD API
+// @version 1.0
+// @description This is for storing data for dnd resources
+// @host localhost:3000
+// @BasePath /
 func App() *buffalo.App {
 	if app == nil {
 		app = buffalo.New(buffalo.Options{
@@ -61,8 +72,15 @@ func App() *buffalo.App {
 		// Remove to disable this.
 		app.Use(popmw.Transaction(models.DB))
 
+		// @Summary Home
+		// @Description get string by ID
+		// @ID get-string-by-int
+		// @Accept  json
+		// @Produce  json
+		// @Success 200 {string} string	"ok"
 		app.GET("/", HomeHandler)
-		
+		app.GET("/swagger/{doc:.*}", buffaloSwagger.WrapHandler(swaggerFiles.Handler))
+
 		app.Resource("/characters", CharactersResource{})
 	}
 

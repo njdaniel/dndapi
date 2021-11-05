@@ -1,0 +1,45 @@
+basePath: /
+definitions:
+  models.Character:
+    properties:
+      body:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: This is for storing data for dnd resources
+  title: DnD API
+  version: "1.0"
+paths:
+  /characters:
+    get:
+      consumes:
+      - application/json
+      description: get characters
+      parameters:
+      - description: name search by q
+        in: query
+        name: q
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.Character'
+              type: array
+            type: array
+      summary: List characters
+swagger: "2.0"
